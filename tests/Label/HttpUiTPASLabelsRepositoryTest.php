@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Label;
 
+use CultuurNet\UDB3\Label;
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
@@ -37,16 +38,16 @@ class HttpUiTPASLabelsRepositoryTest extends \PHPUnit_Framework_TestCase
     public function it_should_return_an_array_of_uitpas_labels()
     {
         $expected = [
-            'Paspartoe',
-            'UiTPAS',
-            'UiTPAS Gent',
-            'UiTPAS Oostende',
-            'UiTPAS regio Aalst',
-            'UiTPAS Dender',
-            'UiTPAS Zuidwest',
-            'UiTPAS Mechelen',
-            'UiTPAS Kempen',
-            'UiTPAS Maasmechelen',
+            new Label('Paspartoe'),
+            new Label('UiTPAS'),
+            new Label('UiTPAS Gent'),
+            new Label('UiTPAS Oostende'),
+            new Label('UiTPAS regio Aalst'),
+            new Label('UiTPAS Dender'),
+            new Label('UiTPAS Zuidwest'),
+            new Label('UiTPAS Mechelen'),
+            new Label('UiTPAS Kempen'),
+            new Label('UiTPAS Maasmechelen'),
         ];
 
         $json = '

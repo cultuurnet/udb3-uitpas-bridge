@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Label;
 
+use CultuurNet\UDB3\Label;
 use Guzzle\Http\Client;
 
 class HttpUiTPASLabelsRepository implements UiTPASLabelsRepository
@@ -34,6 +35,12 @@ class HttpUiTPASLabelsRepository implements UiTPASLabelsRepository
         $response = $this->httpClient->get($this->endpoint)->send();
         $content = $response->getBody();
         $data = json_decode($content, true);
-        return array_values($data);
+        $strings = array_values($data);
+        return array_map(
+            function ($labelString) {
+                return new Label($labelString);
+            },
+            $strings
+        );
     }
 }
