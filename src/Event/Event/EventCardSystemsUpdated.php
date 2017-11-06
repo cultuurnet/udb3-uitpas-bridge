@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Event;
+namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Event\Event;
 
 use CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem\CardSystems;
 use ValueObjects\StringLiteral\StringLiteral;
