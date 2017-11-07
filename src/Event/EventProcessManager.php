@@ -22,11 +22,6 @@ class EventProcessManager implements EventListenerInterface
     private $eventDocumentRepository;
 
     /**
-     * @var DocumentRepositoryInterface
-     */
-    private $organizerDocumentRepository;
-
-    /**
      * @var CommandBusInterface
      */
     private $commandBus;
@@ -43,20 +38,17 @@ class EventProcessManager implements EventListenerInterface
 
     /**
      * @param DocumentRepositoryInterface $eventDocumentRepository
-     * @param DocumentRepositoryInterface $organizerDocumentRepository
      * @param CommandBusInterface $commandBus
      * @param UiTPASLabelsRepository $uitpasLabelsRepository
      * @param LoggerInterface $logger
      */
     public function __construct(
         DocumentRepositoryInterface $eventDocumentRepository,
-        DocumentRepositoryInterface $organizerDocumentRepository,
         CommandBusInterface $commandBus,
         UiTPASLabelsRepository $uitpasLabelsRepository,
         LoggerInterface $logger
     ) {
         $this->eventDocumentRepository = $eventDocumentRepository;
-        $this->organizerDocumentRepository = $organizerDocumentRepository;
         $this->commandBus = $commandBus;
         $this->uitpasLabelsRepository = $uitpasLabelsRepository;
         $this->logger = $logger;
@@ -93,32 +85,32 @@ class EventProcessManager implements EventListenerInterface
         $uitpasLabels = $this->uitpasLabelsRepository->loadAll();
 
         if ($eventCardSystemsUpdated->getCardSystems()->length() === 0) {
+            // Simply remove all UiTPAS labels from the event, even if they're
+            // found on the JSON-LD or not. This is the best way to make sure
+            // there are no UiTPAS labels on the event, and the aggregate will
+            // just ignore the commands if the labels are not present anyway.
             $this->logger->info('Removing all UiTPAS labels from event ' . $eventId);
             $this->removeLabelsFromEvent($eventId, $uitpasLabels);
         } else {
             $this->logger->info('Inheriting UiTPAS labels from organizer on event ' . $eventId);
-            $this->inheritLabelsFromOrganizerToEvent($eventId, $uitpasLabels);
+            $this->copyMatchingLabelsFromOrganizerToEvent($eventId, $uitpasLabels);
         }
     }
 
     /**
      * @param string $eventId
-     * @param Label[] $uitpasLabels
+     * @param Label[] $labels
      */
-    private function removeLabelsFromEvent($eventId, array $uitpasLabels)
+    private function removeLabelsFromEvent($eventId, array $labels)
     {
-        // Simply remove all UiTPAS labels from the event, even if they're found
-        // on the JSON-LD or not. This is the best way to make sure there are no
-        // UiTPAS labels on the event, and the aggregate will just ignore the
-        // commands if the labels are not present anyway.
         $commands = array_map(
-            function (Label $uitpasLabel) use ($eventId) {
+            function (Label $label) use ($eventId) {
                 return new RemoveLabel(
                     $eventId,
-                    $uitpasLabel
+                    $label
                 );
             },
-            $uitpasLabels
+            $labels
         );
 
         $this->dispatchCommands($commands);
@@ -126,18 +118,19 @@ class EventProcessManager implements EventListenerInterface
 
     /**
      * @param string $eventId
-     * @param Label[] $uitpasLabels
+     * @param Label[] $potentialLabelsToCopy
      */
-    private function inheritLabelsFromOrganizerToEvent($eventId, array $uitpasLabels)
+    private function copyMatchingLabelsFromOrganizerToEvent($eventId, array $potentialLabelsToCopy)
     {
         $eventDocument = $this->eventDocumentRepository->get($eventId);
         if (!$eventDocument) {
             $this->logger->error('Event with id ' . $eventId . ' not found in injected DocumentRepository!');
+            return;
         }
 
         $jsonLD = $eventDocument->getBody();
         if (!isset($jsonLD->organizer) || !isset($jsonLD->organizer->labels)) {
-            $this->logger->info('Found no organizer, or no organizer labels, on event ' . $eventId);
+            $this->logger->error('Found no organizer, or no organizer labels, on event ' . $eventId);
             return;
         }
 
@@ -147,27 +140,27 @@ class EventProcessManager implements EventListenerInterface
             'Found organizer labels on event ' . $eventId . ': ' . implode(', ', $organizerLabels)
         );
 
-        $uitpasLabelsAsStrings = array_map(
+        $potentialLabelsToCopyAsString = array_map(
             function (Label $label) {
                 return (string) $label;
             },
-            $uitpasLabels
+            $potentialLabelsToCopy
         );
 
-        $organizerUiTPASLabelsAsStrings = array_intersect($uitpasLabelsAsStrings, $organizerLabels);
+        $matchingLabelsAsStrings = array_intersect($potentialLabelsToCopyAsString, $organizerLabels);
 
         $this->logger->info(
-            'Found uitpas organizer labels on event ' . $eventId . ': ' . implode(', ', $organizerUiTPASLabelsAsStrings)
+            'Found uitpas organizer labels on event ' . $eventId . ': ' . implode(', ', $matchingLabelsAsStrings)
         );
 
         $commands = array_map(
-            function ($uitpasLabel) use ($eventId) {
+            function ($matchingLabel) use ($eventId) {
                 return new AddLabel(
                     $eventId,
-                    new Label($uitpasLabel)
+                    new Label($matchingLabel)
                 );
             },
-            $organizerUiTPASLabelsAsStrings
+            $matchingLabelsAsStrings
         );
 
         $this->dispatchCommands($commands);
