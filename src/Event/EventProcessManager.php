@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\Commands\AbstractLabelCommand;
 use CultuurNet\UDB3\UiTPAS\EventConsumer\Event\Event\EventCardSystemsUpdated;
-use CultuurNet\UDB3\UiTPAS\EventConsumer\Label\UiTPASLabelsRepository;
+use CultuurNet\UDB3\UiTPAS\EventConsumer\Label\UiTPASLabelsRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 class EventProcessManager implements EventListenerInterface
@@ -27,7 +27,7 @@ class EventProcessManager implements EventListenerInterface
     private $commandBus;
 
     /**
-     * @var UiTPASLabelsRepository
+     * @var UiTPASLabelsRepositoryInterface
      */
     private $uitpasLabelsRepository;
 
@@ -39,13 +39,13 @@ class EventProcessManager implements EventListenerInterface
     /**
      * @param DocumentRepositoryInterface $eventDocumentRepository
      * @param CommandBusInterface $commandBus
-     * @param UiTPASLabelsRepository $uitpasLabelsRepository
+     * @param UiTPASLabelsRepositoryInterface $uitpasLabelsRepository
      * @param LoggerInterface $logger
      */
     public function __construct(
         DocumentRepositoryInterface $eventDocumentRepository,
         CommandBusInterface $commandBus,
-        UiTPASLabelsRepository $uitpasLabelsRepository,
+        UiTPASLabelsRepositoryInterface $uitpasLabelsRepository,
         LoggerInterface $logger
     ) {
         $this->eventDocumentRepository = $eventDocumentRepository;

@@ -20,7 +20,7 @@ class HttpUiTPASLabelsRepositoryTest extends \PHPUnit_Framework_TestCase
     private $endpoint;
 
     /**
-     * @var HttpUiTPASLabelsRepository
+     * @var HttpUiTPASLabelsRepositoryInterface
      */
     private $repository;
 
@@ -29,7 +29,7 @@ class HttpUiTPASLabelsRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->httpClient = $this->createMock(Client::class);
         $this->endpoint = 'http://uitpas.dev/labels';
 
-        $this->repository = new HttpUiTPASLabelsRepository($this->httpClient, $this->endpoint);
+        $this->repository = new HttpUiTPASLabelsRepositoryInterface($this->httpClient, $this->endpoint);
     }
 
     /**
