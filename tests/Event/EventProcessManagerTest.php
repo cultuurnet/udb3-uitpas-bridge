@@ -15,7 +15,6 @@ use CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem\CardSystems;
 use CultuurNet\UDB3\UiTPAS\EventConsumer\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\EventConsumer\Label\UiTPASLabelsRepository;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
