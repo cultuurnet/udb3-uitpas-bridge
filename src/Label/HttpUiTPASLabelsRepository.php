@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Label;
 use CultuurNet\UDB3\Label;
 use Guzzle\Http\Client;
 
-class HttpUiTPASLabelsRepositoryInterface implements UiTPASLabelsRepositoryInterface
+class HttpUiTPASLabelsRepository implements UiTPASLabelsRepositoryInterface
 {
     /**
      * @var Client

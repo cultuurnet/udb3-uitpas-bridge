@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Event\Event;
 
+use CultuurNet\UDB3\UiTPAS\EventConsumer\ValueObject\Id;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EventCardSystemsUpdatedDeserializerTest extends \PHPUnit_Framework_TestCase
@@ -41,9 +42,9 @@ class EventCardSystemsUpdatedDeserializerTest extends \PHPUnit_Framework_TestCas
         $cardSystems = $event->getCardSystems();
 
         $this->assertEquals('48ef34b0-e34a-4a15-9ae2-a5a01f189f90', $event->getId());
-        $this->assertEquals(new StringLiteral('7'), $cardSystems->getByKey(7)->getId());
+        $this->assertEquals(new Id('7'), $cardSystems->getByKey(7)->getId());
         $this->assertEquals(new StringLiteral('UiTPAS Oostende'), $cardSystems->getByKey(7)->getName());
-        $this->assertEquals(new StringLiteral('25'), $cardSystems->getByKey(25)->getId());
+        $this->assertEquals(new Id('25'), $cardSystems->getByKey(25)->getId());
         $this->assertEquals(new StringLiteral('UiTPAS Dender'), $cardSystems->getByKey(25)->getName());
         $this->assertCount(2, $cardSystems->toArray());
     }
@@ -69,7 +70,7 @@ class EventCardSystemsUpdatedDeserializerTest extends \PHPUnit_Framework_TestCas
         $cardSystems = $event->getCardSystems();
 
         $this->assertEquals('48ef34b0-e34a-4a15-9ae2-a5a01f189f90', $event->getId());
-        $this->assertEquals(new StringLiteral('7'), $cardSystems->getByKey(7)->getId());
+        $this->assertEquals(new Id('7'), $cardSystems->getByKey(7)->getId());
         $this->assertEquals(new StringLiteral('UiTPAS Oostende'), $cardSystems->getByKey(7)->getName());
         $this->assertCount(1, $cardSystems->toArray());
     }
