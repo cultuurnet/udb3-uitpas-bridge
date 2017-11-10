@@ -201,6 +201,16 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($eventDocument);
 
         $expectedCommands = [
+            new RemoveLabel($eventId->toNative(), new Label('Paspartoe')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Gent')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Oostende')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS regio Aalst')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Dender')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Zuidwest')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Mechelen')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Kempen')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Maasmechelen')),
             new AddLabel($eventId->toNative(), new Label('Paspartoe')),
             new AddLabel($eventId->toNative(), new Label('UiTPAS Oostende')),
         ];
@@ -248,9 +258,22 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
             ->with($eventDocument->getId())
             ->willReturn($eventDocument);
 
+        $expectedCommands = [
+            new RemoveLabel($eventId->toNative(), new Label('Paspartoe')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Gent')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Oostende')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS regio Aalst')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Dender')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Zuidwest')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Mechelen')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Kempen')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Maasmechelen')),
+        ];
+
         $this->eventProcessManager->handle($domainMessage);
 
-        $this->assertEmpty($this->tracedCommands);
+        $this->assertEquals($expectedCommands, $this->tracedCommands);
     }
 
     /**

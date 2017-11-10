@@ -84,14 +84,17 @@ class EventProcessManager implements EventListenerInterface
 
         $uitpasLabels = $this->uitpasLabelsRepository->loadAll();
 
-        if ($eventCardSystemsUpdated->getCardSystems()->length() === 0) {
-            // Simply remove all UiTPAS labels from the event, even if they're
-            // found on the JSON-LD or not. This is the best way to make sure
-            // there are no UiTPAS labels on the event, and the aggregate will
-            // just ignore the commands if the labels are not present anyway.
-            $this->logger->info('Removing all UiTPAS labels from event ' . $eventId);
-            $this->removeLabelsFromEvent($eventId, $uitpasLabels);
-        } else {
+        // Simply remove all UiTPAS labels from the event, even if they're
+        // found on the JSON-LD or not. This is the best way to make sure
+        // there are no UiTPAS labels on the event, and the aggregate will
+        // just ignore the commands if the labels are not present anyway.
+        // Even if the UiTPAS labels are added again from the organizer.
+        // Otherwise we would have to check the event has UiTPAS labels
+        // which are not present on the organizer.
+        $this->logger->info('Removing all UiTPAS labels from event ' . $eventId);
+        $this->removeLabelsFromEvent($eventId, $uitpasLabels);
+
+        if ($eventCardSystemsUpdated->getCardSystems()->length() > 0) {
             $this->logger->info('Inheriting UiTPAS labels from organizer on event ' . $eventId);
             $this->copyMatchingLabelsFromOrganizerToEvent($eventId, $uitpasLabels);
         }
