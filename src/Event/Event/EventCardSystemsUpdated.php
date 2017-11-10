@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Event\Event;
 
 use CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem\CardSystems;
 use CultuurNet\UDB3\UiTPAS\EventConsumer\ValueObject\Id;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class EventCardSystemsUpdated
 {
