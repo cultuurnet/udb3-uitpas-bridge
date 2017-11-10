@@ -14,6 +14,7 @@ use CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem\CardSystems;
 use CultuurNet\UDB3\UiTPAS\EventConsumer\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\EventConsumer\Label\UiTPASLabelsRepository;
+use CultuurNet\UDB3\UiTPAS\EventConsumer\ValueObject\Id;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -166,7 +167,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
     {
         $eventId = new StringLiteral('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
         $cardSystems = (new CardSystems())
-            ->withKey(7, new CardSystem(new StringLiteral('7'), new StringLiteral('Mock CS')));
+            ->withKey(7, new CardSystem(new Id('7'), new StringLiteral('Mock CS')));
 
         $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);
 
@@ -216,7 +217,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
     {
         $eventId = new StringLiteral('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
         $cardSystems = (new CardSystems())
-            ->withKey(7, new CardSystem(new StringLiteral('7'), new StringLiteral('Mock CS')));
+            ->withKey(7, new CardSystem(new Id('7'), new StringLiteral('Mock CS')));
 
         $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);
 
@@ -259,7 +260,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
     {
         $eventId = new StringLiteral('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
         $cardSystems = (new CardSystems())
-            ->withKey(7, new CardSystem(new StringLiteral('7'), new StringLiteral('Mock CS')));
+            ->withKey(7, new CardSystem(new Id('7'), new StringLiteral('Mock CS')));
 
         $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);
 
@@ -300,7 +301,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
     {
         $eventId = new StringLiteral('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
         $cardSystems = (new CardSystems())
-            ->withKey(7, new CardSystem(new StringLiteral('7'), new StringLiteral('Mock CS')));
+            ->withKey(7, new CardSystem(new Id('7'), new StringLiteral('Mock CS')));
 
         $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);
 

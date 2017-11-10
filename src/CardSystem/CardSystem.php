@@ -2,12 +2,13 @@
 
 namespace CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem;
 
+use CultuurNet\UDB3\UiTPAS\EventConsumer\ValueObject\Id;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class CardSystem
 {
     /**
-     * @var StringLiteral
+     * @var Id
      */
     private $id;
 
@@ -17,11 +18,11 @@ class CardSystem
     private $name;
 
     /**
-     * @param StringLiteral $id
+     * @param Id $id
      * @param StringLiteral $name
      */
     public function __construct(
-        StringLiteral $id,
+        Id $id,
         StringLiteral $name
     ) {
         $this->id = $id;
@@ -29,7 +30,7 @@ class CardSystem
     }
 
     /**
-     * @return StringLiteral
+     * @return Id
      */
     public function getId()
     {

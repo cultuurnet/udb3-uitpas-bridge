@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Event\Event;
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem\CardSystems;
+use CultuurNet\UDB3\UiTPAS\EventConsumer\ValueObject\Id;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
@@ -46,7 +47,7 @@ class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
             $cardSystems = $cardSystems->withKey(
                 $cardSystemDTO->id,
                 new CardSystem(
-                    new StringLiteral((string) $cardSystemDTO->id),
+                    new Id((string) $cardSystemDTO->id),
                     new StringLiteral($cardSystemDTO->name)
                 )
             );
