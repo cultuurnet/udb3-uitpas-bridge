@@ -128,7 +128,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function it_should_remove_every_uitpas_label_from_an_event_if_it_has_no_card_systems_after_an_update()
     {
-        $eventId = new StringLiteral('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
+        $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
         $cardSystems = new CardSystems();
 
         $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);
@@ -165,7 +165,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function it_should_copy_organizer_uitpas_labels_to_an_updated_event_with_card_systems()
     {
-        $eventId = new StringLiteral('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
+        $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
         $cardSystems = (new CardSystems())
             ->withKey(7, new CardSystem(new Id('7'), new StringLiteral('Mock CS')));
 
@@ -215,7 +215,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function it_should_copy_no_labels_if_the_event_organizer_has_no_uitpas_labels()
     {
-        $eventId = new StringLiteral('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
+        $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
         $cardSystems = (new CardSystems())
             ->withKey(7, new CardSystem(new Id('7'), new StringLiteral('Mock CS')));
 
@@ -258,7 +258,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function it_should_log_an_error_if_no_organizer_labels_can_be_found_for_an_event()
     {
-        $eventId = new StringLiteral('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
+        $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
         $cardSystems = (new CardSystems())
             ->withKey(7, new CardSystem(new Id('7'), new StringLiteral('Mock CS')));
 
@@ -299,7 +299,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function it_should_log_an_error_if_no_event_json_ld_can_be_found()
     {
-        $eventId = new StringLiteral('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
+        $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
         $cardSystems = (new CardSystems())
             ->withKey(7, new CardSystem(new Id('7'), new StringLiteral('Mock CS')));
 

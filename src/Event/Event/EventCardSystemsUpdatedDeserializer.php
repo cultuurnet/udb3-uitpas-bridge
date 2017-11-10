@@ -24,7 +24,7 @@ class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
             throw new \InvalidArgumentException('Missing cdbid property.');
         }
 
-        $eventId = new StringLiteral((string) $dto->cdbid);
+        $eventId = new Id((string) $dto->cdbid);
 
         if (!isset($dto->cardSystems)) {
             throw new \InvalidArgumentException('Missing cardSystems property.');

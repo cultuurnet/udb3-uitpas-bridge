@@ -3,12 +3,13 @@
 namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Event\Event;
 
 use CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem\CardSystems;
+use CultuurNet\UDB3\UiTPAS\EventConsumer\ValueObject\Id;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EventCardSystemsUpdated
 {
     /**
-     * @var StringLiteral
+     * @var Id
      */
     private $id;
 
@@ -18,11 +19,11 @@ class EventCardSystemsUpdated
     private $cardSystems;
 
     /**
-     * @param StringLiteral $id
+     * @param Id $id
      * @param CardSystems $cardSystems
      */
     public function __construct(
-        StringLiteral $id,
+        Id $id,
         CardSystems $cardSystems
     ) {
         $this->id = $id;
@@ -30,7 +31,7 @@ class EventCardSystemsUpdated
     }
 
     /**
-     * @return StringLiteral
+     * @return Id
      */
     public function getId()
     {
