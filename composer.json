@@ -1,5 +1,5 @@
 {
-  "name": "cultuurnet/udb3-uitpas-bridge",
+  "name": "cultuurnet/udb3-uitpas-event-consumer",
   "description": "",
   "type": "library",
   "license": "Apache-2.0",
