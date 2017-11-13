@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\UiTPAS\EventConsumer\ValueObject;
+namespace CultuurNet\UDB3\UiTPAS\ValueObject;
 
 class IdTest extends \PHPUnit_Framework_TestCase
 {

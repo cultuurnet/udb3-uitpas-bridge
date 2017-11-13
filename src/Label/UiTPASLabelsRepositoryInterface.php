@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Label;
+namespace CultuurNet\UDB3\UiTPAS\Label;
 
 use CultuurNet\UDB3\Label;
 

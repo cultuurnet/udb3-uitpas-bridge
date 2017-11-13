@@ -1,9 +1,9 @@
 <?php
 
-namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Event\Event;
+namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 
-use CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem\CardSystems;
-use CultuurNet\UDB3\UiTPAS\EventConsumer\ValueObject\Id;
+use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystems;
+use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 
 class EventCardSystemsUpdated
 {
