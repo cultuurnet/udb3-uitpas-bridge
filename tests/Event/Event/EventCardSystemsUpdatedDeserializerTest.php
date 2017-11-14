@@ -1,8 +1,8 @@
 <?php
 
-namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Event\Event;
+namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 
-use CultuurNet\UDB3\UiTPAS\EventConsumer\ValueObject\Id;
+use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EventCardSystemsUpdatedDeserializerTest extends \PHPUnit_Framework_TestCase

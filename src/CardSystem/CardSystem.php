@@ -1,8 +1,8 @@
 <?php
 
-namespace CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem;
+namespace CultuurNet\UDB3\UiTPAS\CardSystem;
 
-use CultuurNet\UDB3\UiTPAS\EventConsumer\ValueObject\Id;
+use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class CardSystem

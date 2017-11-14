@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\UiTPAS\EventConsumer\Event;
+namespace CultuurNet\UDB3\UiTPAS\Event;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\DomainMessage;
@@ -10,11 +10,11 @@ use CultuurNet\UDB3\Event\Commands\RemoveLabel;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem\CardSystem;
-use CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem\CardSystems;
-use CultuurNet\UDB3\UiTPAS\EventConsumer\Event\Event\EventCardSystemsUpdated;
-use CultuurNet\UDB3\UiTPAS\EventConsumer\Label\UiTPASLabelsRepositoryInterface;
-use CultuurNet\UDB3\UiTPAS\EventConsumer\ValueObject\Id;
+use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
+use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystems;
+use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
+use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepositoryInterface;
+use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 

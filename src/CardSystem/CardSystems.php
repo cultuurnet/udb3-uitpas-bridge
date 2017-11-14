@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\UiTPAS\EventConsumer\CardSystem;
+namespace CultuurNet\UDB3\UiTPAS\CardSystem;
 
 use TwoDotsTwice\Collection\AbstractCollection;
 

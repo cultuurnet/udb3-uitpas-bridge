@@ -20,12 +20,12 @@
   },
   "autoload": {
     "psr-4": {
-      "CultuurNet\\UDB3\\UiTPAS\\EventConsumer\\": "src/"
+      "CultuurNet\\UDB3\\UiTPAS\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "CultuurNet\\UDB3\\UiTPAS\\EventConsumer\\": "tests/"
+      "CultuurNet\\UDB3\\UiTPAS\\": "tests/"
     }
   },
   "minimum-stability": "dev",
