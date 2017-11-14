@@ -163,7 +163,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_copy_organizer_uitpas_labels_to_an_updated_event_with_card_systems()
+    public function it_should_copy_visible_organizer_uitpas_labels_to_an_updated_event_with_card_systems()
     {
         $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
         $cardSystems = (new CardSystems())
@@ -211,8 +211,130 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
             new RemoveLabel($eventId->toNative(), new Label('UiTPAS Mechelen')),
             new RemoveLabel($eventId->toNative(), new Label('UiTPAS Kempen')),
             new RemoveLabel($eventId->toNative(), new Label('UiTPAS Maasmechelen')),
-            new AddLabel($eventId->toNative(), new Label('Paspartoe')),
-            new AddLabel($eventId->toNative(), new Label('UiTPAS Oostende')),
+            new AddLabel($eventId->toNative(), new Label('Paspartoe', true)),
+            new AddLabel($eventId->toNative(), new Label('UiTPAS Oostende', true)),
+        ];
+
+        $this->eventProcessManager->handle($domainMessage);
+
+        $this->assertEquals($expectedCommands, $this->tracedCommands);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_copy_hidden_organizer_uitpas_labels_to_an_updated_event_with_card_systems()
+    {
+        $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
+        $cardSystems = (new CardSystems())
+            ->withKey(7, new CardSystem(new Id('7'), new StringLiteral('Mock CS')));
+
+        $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);
+
+        $domainMessage = DomainMessage::recordNow(
+            $eventId->toNative(),
+            8,
+            new Metadata([]),
+            $cardSystemsUpdated
+        );
+
+        $eventLd = json_encode(
+            [
+                '@id' => 'http://udb3.dev/event/cbee7413-ac1e-4dfb-8004-34767eafb8b7',
+                '@type' => 'Event',
+                'organizer' => [
+                    'hiddenLabels' => [
+                        'Foo',
+                        'Paspartoe',
+                        'Bar',
+                        'UiTPAS Oostende',
+                    ],
+                ],
+            ]
+        );
+
+        $eventDocument = new JsonDocument($eventId->toNative(), $eventLd);
+
+        $this->eventDocumentRepository->expects($this->once())
+            ->method('get')
+            ->with($eventDocument->getId())
+            ->willReturn($eventDocument);
+
+        $expectedCommands = [
+            new RemoveLabel($eventId->toNative(), new Label('Paspartoe')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Gent')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Oostende')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS regio Aalst')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Dender')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Zuidwest')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Mechelen')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Kempen')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Maasmechelen')),
+            new AddLabel($eventId->toNative(), new Label('Paspartoe', false)),
+            new AddLabel($eventId->toNative(), new Label('UiTPAS Oostende', false)),
+        ];
+
+        $this->eventProcessManager->handle($domainMessage);
+
+        $this->assertEquals($expectedCommands, $this->tracedCommands);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_copy_visible_and_hidden_organizer_uitpas_labels_to_an_updated_event_with_card_systems()
+    {
+        $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
+        $cardSystems = (new CardSystems())
+            ->withKey(7, new CardSystem(new Id('7'), new StringLiteral('Mock CS')));
+
+        $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);
+
+        $domainMessage = DomainMessage::recordNow(
+            $eventId->toNative(),
+            8,
+            new Metadata([]),
+            $cardSystemsUpdated
+        );
+
+        $eventLd = json_encode(
+            [
+                '@id' => 'http://udb3.dev/event/cbee7413-ac1e-4dfb-8004-34767eafb8b7',
+                '@type' => 'Event',
+                'organizer' => [
+                    'labels' => [
+                        'Foo',
+                        'Paspartoe',
+                    ],
+                    'hiddenLabels' => [
+                        'Bar',
+                        'UiTPAS Oostende',
+                    ],
+                ],
+            ]
+        );
+
+        $eventDocument = new JsonDocument($eventId->toNative(), $eventLd);
+
+        $this->eventDocumentRepository->expects($this->once())
+            ->method('get')
+            ->with($eventDocument->getId())
+            ->willReturn($eventDocument);
+
+        $expectedCommands = [
+            new RemoveLabel($eventId->toNative(), new Label('Paspartoe')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Gent')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Oostende')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS regio Aalst')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Dender')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Zuidwest')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Mechelen')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Kempen')),
+            new RemoveLabel($eventId->toNative(), new Label('UiTPAS Maasmechelen')),
+            new AddLabel($eventId->toNative(), new Label('Paspartoe', true)),
+            new AddLabel($eventId->toNative(), new Label('UiTPAS Oostende', false)),
         ];
 
         $this->eventProcessManager->handle($domainMessage);
@@ -279,7 +401,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_log_an_error_if_no_organizer_labels_can_be_found_for_an_event()
+    public function it_should_log_an_error_if_no_organizer_can_be_found_for_an_event()
     {
         $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
         $cardSystems = (new CardSystems())
@@ -298,7 +420,6 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
             [
                 '@id' => 'http://udb3.dev/event/cbee7413-ac1e-4dfb-8004-34767eafb8b7',
                 '@type' => 'Event',
-                'organizer' => [],
             ]
         );
 
@@ -312,7 +433,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
         $this->eventProcessManager->handle($domainMessage);
 
         $this->assertContains(
-            'Found no organizer, or no organizer labels, on event ' . $eventId->toNative(),
+            'Found no organizer on event ' . $eventId->toNative(),
             $this->errorLogs
         );
     }
