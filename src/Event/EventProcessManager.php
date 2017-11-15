@@ -132,15 +132,19 @@ class EventProcessManager implements EventListenerInterface
         }
 
         $jsonLD = $eventDocument->getBody();
-        if (!isset($jsonLD->organizer) || !isset($jsonLD->organizer->labels)) {
-            $this->logger->error('Found no organizer, or no organizer labels, on event ' . $eventId);
+        if (!isset($jsonLD->organizer)) {
+            $this->logger->error('Found no organizer on event ' . $eventId);
             return;
         }
 
-        $organizerLabels = $jsonLD->organizer->labels;
-
+        $organizerLabels = isset($jsonLD->organizer->labels) ? $jsonLD->organizer->labels : [];
         $this->logger->info(
             'Found organizer labels on event ' . $eventId . ': ' . implode(', ', $organizerLabels)
+        );
+
+        $hiddenOrganizerLabels = isset($jsonLD->organizer->hiddenLabels) ? $jsonLD->organizer->hiddenLabels : [];
+        $this->logger->info(
+            'Found hidden organizer labels on event ' . $eventId . ': ' . implode(', ', $hiddenOrganizerLabels)
         );
 
         $potentialLabelsToCopyAsString = array_map(
@@ -150,17 +154,29 @@ class EventProcessManager implements EventListenerInterface
             $potentialLabelsToCopy
         );
 
-        $matchingLabelsAsStrings = array_intersect($potentialLabelsToCopyAsString, $organizerLabels);
+        $this->addIntersectingLabelsToEvent($eventId, $potentialLabelsToCopyAsString, $organizerLabels, true);
+        $this->addIntersectingLabelsToEvent($eventId, $potentialLabelsToCopyAsString, $hiddenOrganizerLabels, false);
+    }
+
+    /**
+     * @param string $eventId
+     * @param string[] $labels1
+     * @param string[] $labels2
+     * @param bool $visible
+     */
+    private function addIntersectingLabelsToEvent($eventId, $labels1, $labels2, $visible)
+    {
+        $matchingLabelsAsStrings = array_intersect($labels1, $labels2);
 
         $this->logger->info(
             'Found uitpas organizer labels on event ' . $eventId . ': ' . implode(', ', $matchingLabelsAsStrings)
         );
 
         $commands = array_map(
-            function ($matchingLabel) use ($eventId) {
+            function ($matchingLabel) use ($eventId, $visible) {
                 return new AddLabel(
                     $eventId,
-                    new Label($matchingLabel)
+                    new Label($matchingLabel, $visible)
                 );
             },
             $matchingLabelsAsStrings
