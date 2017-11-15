@@ -164,7 +164,7 @@ class EventProcessManager implements EventListenerInterface
      * @param string[] $labels2
      * @param bool $visible
      */
-    private function addIntersectingLabelsToEvent($eventId, $labels1, $labels2, $visible = true)
+    private function addIntersectingLabelsToEvent($eventId, $labels1, $labels2, $visible)
     {
         $matchingLabelsAsStrings = array_intersect($labels1, $labels2);
 
