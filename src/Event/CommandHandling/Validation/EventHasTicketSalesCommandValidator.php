@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation;
 use CultuurNet\Broadway\CommandHandling\Validation\CommandValidatorInterface;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
+use Psr\Log\LoggerInterface;
 
 class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
 {
@@ -13,9 +14,17 @@ class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
      */
     private $uitpas;
 
-    public function __construct(\CultureFeed_Uitpas $uitpas)
-    {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(
+        \CultureFeed_Uitpas $uitpas,
+        LoggerInterface $logger
+    ) {
         $this->uitpas = $uitpas;
+        $this->logger = $logger;
     }
 
     /**
@@ -28,7 +37,18 @@ class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
         }
 
         $eventId = $command->getItemId();
-        $hasTicketSales = $this->uitpas->eventHasTicketSales($eventId);
+
+        try {
+            $hasTicketSales = $this->uitpas->eventHasTicketSales($eventId);
+        } catch (\Exception $exception) {
+            // By design to catch all exceptions and map an exception to no ticket sales.
+            // This is done to allow setting price and organizer even when UiTPAS has issues.
+            // All exceptions will be logged.
+            $this->logger->warning('Ticket call sales failed with exception message "' . $exception->getMessage() . '"'
+                . ' and exception code "' . $exception->getCode() . '". Assuming no ticket sales for event ' . $eventId);
+
+            return;
+        }
 
         if ($hasTicketSales) {
             throw new EventHasTicketSalesException($eventId);
