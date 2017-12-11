@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation;
 
 use CultuurNet\Broadway\CommandHandling\Validation\CommandValidatorInterface;
+use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
 use Psr\Log\LoggerInterface;
@@ -32,7 +33,9 @@ class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
      */
     public function validate($command)
     {
-        if (!($command instanceof UpdateOrganizer) && !($command instanceof UpdatePriceInfo)) {
+        if (!($command instanceof UpdateOrganizer) &&
+            !($command instanceof UpdatePriceInfo) &&
+            !($command instanceof DeleteOrganizer)) {
             return;
         }
 

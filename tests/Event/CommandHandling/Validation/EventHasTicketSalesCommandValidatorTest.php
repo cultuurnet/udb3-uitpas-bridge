@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation;
 
 use CultureFeed_HttpException;
+use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer as UpdatePlaceOrganizer;
@@ -47,6 +48,26 @@ class EventHasTicketSalesCommandValidatorTest extends \PHPUnit_Framework_TestCas
     public function it_should_throw_an_exception_when_updating_the_organizer_of_an_event_with_ticket_sales()
     {
         $command = new UpdateOrganizer(
+            '5e75970e-43d8-481f-88db-9a61dd087cbb',
+            '596c4837-6239-47e3-bf33-2bb11dc6adc7'
+        );
+
+        $this->uitpas->expects($this->once())
+            ->method('eventHasTicketSales')
+            ->with('5e75970e-43d8-481f-88db-9a61dd087cbb')
+            ->willReturn(true);
+
+        $this->expectException(EventHasTicketSalesException::class);
+
+        $this->validator->validate($command);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_when_deleting_the_organizer_of_an_event_with_ticket_sales()
+    {
+        $command = new DeleteOrganizer(
             '5e75970e-43d8-481f-88db-9a61dd087cbb',
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
